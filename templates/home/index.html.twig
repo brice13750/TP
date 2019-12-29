@@ -8,7 +8,6 @@
 		class="container">
 
 		<!-- main -->
-		<h5>brice</h5>
 		{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 			<h1 class="title text-center pt-4">Localise ton futur terrain de jeu
 				{{ app.user.firstname }}</h1>
@@ -51,7 +50,7 @@
 				{% for place in places %}
 					<div class="col-lg-4 mx-auto">
 						<div class="card mx-auto  my-2" style="width: 18rem; height:25rem;">
-							<img src="assets/image/card2.jpg" class="card-img-top" alt="...">
+							<img src="/image/card2.jpg" class="card-img-top" alt="...">
 							<div class="card-body">
 								<h5 class="card-title text-center">{{ place.name }}</h5>
 								<p class="card-text">Adresse:

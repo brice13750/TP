@@ -4,7 +4,11 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Entity\Password;
 use App\Form\UserEditType;
+use App\Form\PasswordEditType;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -76,4 +80,40 @@ class UserController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/edit/password", name="edit_password")
+     * @param Request $request
+     * @return Response
+     */
+    public function edit_password(Request $request, UserPasswordEncoderInterface $encoder, EntityManagerInterface $entityManager)
+    {
+        $newPassword = new Password();
+
+        $user = $this->getUser();
+        $form = $this->createForm(PasswordEditType::class, $newPassword);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            // https://www.php.net/manual/fr/function.password-verify.php
+            if  (!password_verify($newPassword->getOldPassword(), $user->getPassword())){
+                $form->get('oldPassword')->addError(new FormError('Le mot de passe que vous avez tapé n\'est pas votre mot de passe actuel'));
+            }
+            else{
+            $new = $newPassword->getNewPassword();
+            $hash = $encoder->encodePassword($user, $new);
+
+            $user->setPassword($hash);
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            $this->addFlash('warning', 'Mot de passe modifié');
+            return $this->redirectToRoute('user_profil');
+            }
+        }
+        return $this->render('user/edit_password.html.twig', [
+            'form' => $form->createView(),
+        ]);
+
+}
 }

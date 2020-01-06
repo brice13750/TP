@@ -24,16 +24,18 @@ class ContactController extends AbstractController
 
             $subject = $contact->getSubject();
             $body = $contact->getBody();
+            $email = $contact->getEmail();
             
 
             $message = (new \Swift_Message($subject))
             ->setFrom('runmap@gmail.com')
-            ->setTo('brice.ouaali@gmail.com')
+            ->setTo('ouaali.brice@gmail.com')
             ->setBody(
                 $this->renderView(
                     'email/contact.html.twig',[
                     'subject' => $subject,
-                    'body' => $body
+                    'body' => $body,
+                    'email' => $email
                     ]),
                     'text/html'
                 );

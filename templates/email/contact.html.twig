@@ -1,4 +1,6 @@
-<h3>{{ app.user.email }}</h2>
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+<h3>{{ app.user.email }}</h3>
+{% endif %}
 <p>Email: {{ email }}</p>
 <p>Sujet: {{ subject }}</p>
 <p>Message: {{ body }}</p>

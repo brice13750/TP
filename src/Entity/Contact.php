@@ -26,7 +26,14 @@ class Contact
      * )
      */
     private $body;
-
+    
+    /**
+     * @Assert\Email(
+     *     message = "Entrez un email valide"
+     * )
+     *
+     */
+    private $email;
 
     public function getId(): ?int
     {
@@ -53,6 +60,18 @@ class Contact
     public function setBody(string $body): self
     {
         $this->body = $body;
+
+        return $this;
+    }
+
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    public function setEmail($email)
+    {
+        $this->email = $email;
 
         return $this;
     }

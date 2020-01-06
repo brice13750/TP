@@ -6,6 +6,7 @@ use App\Entity\City;
 use App\Entity\Place;
 
 use App\Entity\Review;
+use App\Form\AddPlaceType;
 use App\Form\CityType;
 use App\Form\PlaceType;
 
@@ -41,7 +42,6 @@ class PlaceController extends AbstractController
     public function showPlace(Place $place, Request $request) 
     // https://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/index.html
     {
-        $reviews = $place->getReviews();
         $review = new Review();
         $user = $this->getUser();
         // je crée le formulaire reliée à l'entitée review 
@@ -67,7 +67,6 @@ class PlaceController extends AbstractController
         }
 
         return $this->render('place/show.html.twig', [
-            'reviews' => $reviews,
             'place' => $place,
             'form' => $form->createView()
         ]);
@@ -163,5 +162,4 @@ class PlaceController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-
 }

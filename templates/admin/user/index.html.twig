@@ -28,7 +28,7 @@
                 <td>{{ user.firstname }}</td>
                 <td>{{ user.sex }}</td>
                 <td>{{ user.age }}</td>
-                <td><a class="text-dark" href="{{ path('delete_user', {'id': user.id}) }}"><i class="fas fa-trash-alt"></i></a></td>
+                <td><a class="text-dark" href="{{ path('delete_user', {'id': user.id}) }}" onclick="confirm('Êtes-vous vraiment sûr ?');"><i class="fas fa-trash-alt"></i></a></td>
                 </tr>
                 {% endfor %}
           </tbody>

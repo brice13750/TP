@@ -20,7 +20,7 @@ class UserController extends AbstractController
     /**
      * @Route("/inscription", name="register")
      */
-    public function register(Request $request, UserPasswordEncoderInterface $encoder)
+    public function register(\Swift_Mailer $mailer, Request $request, UserPasswordEncoderInterface $encoder)
     {
         $user = new User();
         
@@ -37,6 +37,23 @@ class UserController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($user);
         $entityManager->flush();
+
+            $email = $user->getEmail();
+            
+
+            $message = (new \Swift_Message($email))
+            ->setFrom('runmap@gmail.com')
+            ->setTo($email)
+            ->setBody(
+                $this->renderView(
+                    'user/contact.html.twig',[
+                    'email' => $email,
+                    'user' => $user
+                    ]),
+                    'text/html'
+                );
+
+            $mailer->send($message);
 
         $this->addFlash('success', 'utilisateur crée');
         return $this->redirectToRoute('app_login');
